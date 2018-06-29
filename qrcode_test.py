@@ -1,5 +1,8 @@
 import qrcode
-
+import json
+import urllib.request
+import datetime
+data = 0
 qr = qrcode.QRCode(
     version = 1,
     error_correction = qrcode.constants.ERROR_CORRECT_H,
@@ -7,11 +10,18 @@ qr = qrcode.QRCode(
     border=4,
 )
 
-data = "Hello!"
+now = datetime.datetime.now()
 
-qr.add_data(data)
+def init(vinsureType):
+    global data
+    data = {'insureType':vinsureType}
+
+
+json_data = json.dumps(data)
+qr.add_data(json_data)
 qr.make(fit = True)
 
 img = qr.make_image()
-
-img.save("qr.jpg")
+nowDatetime = now.strftime('%Y-%m-%d %H:%M:%S')
+imgname = "qrcode_"+nowDatetime+".jpg"
+img.save(imgname)
